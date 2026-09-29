@@ -1,0 +1,8 @@
+C:\Users\Raúl\Reserva Project\RESERVA API\reservaapp.tests\bin\Debug\net10.0\.msCoverageSourceRootsMapping_ReservaApp.Tests
+C:\Users\Raúl\Reserva Project\RESERVA API\reservaapp.tests\obj\Debug\net10.0\ReservaApp.Tests.csproj.AssemblyReference.cache
+C:\Users\Raúl\Reserva Project\RESERVA API\reservaapp.tests\obj\Debug\net10.0\MvcTestingAppManifest.json
+C:\Users\Raúl\Reserva Project\RESERVA API\reservaapp.tests\obj\Debug\net10.0\ReservaApp.Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Raúl\Reserva Project\RESERVA API\reservaapp.tests\obj\Debug\net10.0\ReservaApp.Tests.AssemblyInfoInputs.cache
+C:\Users\Raúl\Reserva Project\RESERVA API\reservaapp.tests\obj\Debug\net10.0\ReservaApp.Tests.AssemblyInfo.cs
+C:\Users\Raúl\Reserva Project\RESERVA API\reservaapp.tests\obj\Debug\net10.0\ReservaApp.Tests.csproj.CoreCompileInputs.cache
+C:\Users\Raúl\Reserva Project\RESERVA API\reservaapp.tests\obj\Debug\net10.0\ReservaApp.Tests.sourcelink.json
