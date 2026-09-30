@@ -5,6 +5,7 @@ using ReservaApp.API.Data;
 using ReservaApp.API.DTOs;
 using ReservaApp.API.Models;
 using ReservaApp.API.Services;
+using Xunit;
 
 namespace ReservaApp.Tests.Unit;
 
