@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReservaApp.API.Data;
 using ReservaApp.API.Models;
+using System.Net.Http.Json;
 
 namespace ReservaApp.Tests.Integration;
 

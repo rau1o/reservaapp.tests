@@ -4,6 +4,7 @@ using ReservaApp.API.Data;
 using ReservaApp.API.Models;
 using System.Net;
 using System.Net.Http.Json;
+using Xunit;
 
 namespace ReservaApp.Tests.Integration;
 

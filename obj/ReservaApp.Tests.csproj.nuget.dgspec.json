@@ -4,14 +4,14 @@
     "C:\\Users\\Raúl\\Reserva Project\\RESERVA API\\reservaapp.tests\\ReservaApp.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Raúl\\Reserva Project\\RESERVA API\\ReservaApp.API\\ReservaApp.API.csproj": {
+    "C:\\Users\\Raúl\\Reserva Project\\RESERVA API\\reservaapp.api\\ReservaApp.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Raúl\\Reserva Project\\RESERVA API\\ReservaApp.API\\ReservaApp.API.csproj",
+        "projectUniqueName": "C:\\Users\\Raúl\\Reserva Project\\RESERVA API\\reservaapp.api\\ReservaApp.API.csproj",
         "projectName": "ReservaApp.API",
-        "projectPath": "C:\\Users\\Raúl\\Reserva Project\\RESERVA API\\ReservaApp.API\\ReservaApp.API.csproj",
+        "projectPath": "C:\\Users\\Raúl\\Reserva Project\\RESERVA API\\reservaapp.api\\ReservaApp.API.csproj",
         "packagesPath": "C:\\Users\\Raúl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Raúl\\Reserva Project\\RESERVA API\\ReservaApp.API\\obj\\",
+        "outputPath": "C:\\Users\\Raúl\\Reserva Project\\RESERVA API\\reservaapp.api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

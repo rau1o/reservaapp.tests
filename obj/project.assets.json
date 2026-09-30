@@ -4004,8 +4004,8 @@
     },
     "ReservaApp.API/1.0.0": {
       "type": "project",
-      "path": "../ReservaApp.API/ReservaApp.API.csproj",
-      "msbuildProject": "../ReservaApp.API/ReservaApp.API.csproj"
+      "path": "../reservaapp.api/ReservaApp.API.csproj",
+      "msbuildProject": "../reservaapp.api/ReservaApp.API.csproj"
     }
   },
   "projectFileDependencyGroups": {
