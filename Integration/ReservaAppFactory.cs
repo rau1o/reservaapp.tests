@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using ReservaApp.API.Data;
 using ReservaApp.API.Models;
 using System.Net.Http.Json;
+using System.Text;
 
 namespace ReservaApp.Tests.Integration;
 
@@ -23,24 +26,57 @@ public class ReservaAppFactory : WebApplicationFactory<Program>
         {
             config.AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["Jwt:Key"]              = "clave-super-secreta-para-tests-de-jwt-32chars!",
-                ["Jwt:Issuer"]           = "ReservaApp.Test",
-                ["Jwt:Audience"]         = "ReservaApp.Test",
+                ["Jwt:Key"] = "clave-super-secreta-para-tests-de-jwt-32chars!",
+                ["Jwt:Issuer"] = "ReservaApp.Test",
+                ["Jwt:Audience"] = "ReservaApp.Test",
                 ["Jwt:ExpiresInMinutes"] = "60"
             });
         });
 
         builder.ConfigureServices(services =>
         {
-            // Removemos el DbContext de SQL Server registrado en Program.cs
-            var descriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
-            if (descriptor is not null)
-                services.Remove(descriptor);
+            // EF Core 9/10 registra DOS descriptores por cada AddDbContext():
+            //   1. DbContextOptions<AppDbContext>
+            //   2. IDbContextOptionsConfiguration<AppDbContext>  ← nuevo en EF 9+
+            // Si solo removemos el primero, el proveedor SqlServer queda activo
+            // y choca con InMemory → "Only a single database provider can be registered".
+            // Solución: eliminar TODOS los descriptores que usen AppDbContext
+            // como argumento de tipo genérico.
+            var descriptors = services
+                .Where(d =>
+                    d.ServiceType == typeof(DbContextOptions<AppDbContext>) ||
+                    (d.ServiceType.IsGenericType &&
+                     d.ServiceType.GetGenericArguments().FirstOrDefault() == typeof(AppDbContext)))
+                .ToList();
 
-            // Registramos un DbContext con BD en memoria (único por factory)
+            foreach (var d in descriptors)
+                services.Remove(d);
+
+            // IMPORTANTE: el Guid debe capturarse FUERA del lambda.
+            // Si está dentro, EF Core lo evalúa cada vez que construye los options
+            // (una vez por scope), dando un nombre de BD distinto en cada llamada.
+            // El seed escribiría en "TestDb_aaa" y el HTTP request leería de "TestDb_bbb".
+            var dbName = "TestDb_" + Guid.NewGuid();
             services.AddDbContext<AppDbContext>(options =>
-                options.UseInMemoryDatabase("TestDb_" + Guid.NewGuid()));
+                options.UseInMemoryDatabase(dbName));
+
+            // Sobreescribir los parámetros de validación JWT directamente.
+            // ConfigureAppConfiguration carga la clave de prueba, pero el middleware
+            // JwtBearer ya capturó los TokenValidationParameters al iniciarse.
+            // PostConfigure corre DESPUÉS de toda la configuración y garantiza
+            // que el middleware use la clave correcta durante los tests.
+            services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes("clave-super-secreta-para-tests-de-jwt-32chars!")),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true
+                };
+            });
         });
 
         builder.UseEnvironment("Development");
@@ -70,10 +106,10 @@ public class ReservaAppFactory : WebApplicationFactory<Program>
         {
             db.Usuarios.Add(new Usuario
             {
-                Nombre       = "Admin Test",
-                Email        = email,
+                Nombre = "Admin Test",
+                Email = email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
-                Rol          = "Admin"
+                Rol = "Admin"
             });
             await db.SaveChangesAsync();
         }
